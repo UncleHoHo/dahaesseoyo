@@ -91,7 +91,11 @@ svg { display: block; }
 .segbtn svg { width: 1.6em; height: 1.6em; }
 .segbtn.on { background: #FFFFFF; color: var(--ink); }
 .when { display: flex; flex-direction: column; align-items: center; gap: 2px; white-space: nowrap; }
-.date { font-size: var(--fs-date); line-height: 1.15; }
+.date { display: flex; align-items: center; justify-content: center; gap: .45em; font-size: var(--fs-date); line-height: 1.15; }
+.kchip { display: inline-flex; align-items: center; gap: .3em; min-height: clamp(28px, calc(var(--u) * 4.6), 42px); padding: 0 .7em 0 .35em; border-radius: 999px; background: #FFFFFF; color: var(--ink); font-size: .9em; white-space: nowrap; }
+.kchip svg { width: 1.5em; height: 1.5em; }
+.tight1 .kchip { padding: 0 .35em; }
+.tight1 .kchip span, .tight2 .wd, .tight3 .timer .t0 { display: none; }
 .clock { font-size: var(--fs-clock); line-height: 1.05; font-variant-numeric: tabular-nums; }
 .tools { display: flex; align-items: center; gap: calc(var(--u) * 1.4); }
 .start, .timer { height: clamp(48px, calc(var(--u) * 8.8), 74px); display: flex; align-items: center; gap: calc(var(--u) * 1.1); border-radius: 999px; white-space: nowrap; }
@@ -134,6 +138,7 @@ svg { display: block; }
 
 .tiles { flex: 1 1 0; min-width: 0; min-height: 0; display: grid; grid-template-columns: repeat(var(--tcols, var(--tc)), minmax(0, 1fr)); grid-auto-rows: minmax(0, 1fr); gap: var(--tgap); }
 .tiles.n6 { --tc: 6; }
+.tiles.n5 { --tc: 5; }
 .tiles.n3 { --tc: 3; }
 .tile {
   position: relative; min-width: 0; min-height: 0; display: flex; flex-direction: column; align-items: center; gap: calc(var(--u) * 0.6);
@@ -153,6 +158,8 @@ svg { display: block; }
 .sticker { position: absolute; top: calc(var(--u) * -1.7); right: calc(var(--u) * -1.5); width: clamp(26px, calc(var(--u) * 7.4), 62px); height: clamp(26px, calc(var(--u) * 7.4), 62px); pointer-events: none; }
 .n3 .sticker { width: clamp(30px, calc(var(--u) * 9.2), 78px); height: clamp(30px, calc(var(--u) * 9.2), 78px); }
 .tile.just .sticker { animation: pop .45s cubic-bezier(.2, 1.6, .4, 1); }
+.tile.late { border-color: #E5484D; animation: late 1s ease-in-out infinite; }
+.tile.late .sticker { animation: wiggle .45s ease-in-out infinite; }
 
 .party {
   flex: 1 1 0; min-width: 0; min-height: 0; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: space-between;
@@ -180,6 +187,27 @@ svg { display: block; }
 .offday .sub { font-size: clamp(15px, calc(var(--u) * 3.3), 28px); color: var(--ink-soft); margin-top: calc(var(--u) * 1.2); }
 .offday .orow { display: flex; flex-wrap: wrap; gap: 12px; margin-top: calc(var(--u) * 3); }
 .offday .ghost { font-size: clamp(14px, calc(var(--u) * 2.5), 20px); }
+.offday.choose { flex-direction: column; align-items: stretch; justify-content: center; gap: calc(var(--u) * 2.2); padding: calc(var(--u) * 2) calc(var(--u) * 3); }
+.chead { display: flex; align-items: baseline; justify-content: center; flex-wrap: wrap; gap: 0 calc(var(--u) * 2.4); text-align: center; }
+.choose .big { font-size: clamp(20px, calc(var(--u) * 4.8), 42px); }
+.choose .sub { margin-top: 0; font-size: clamp(13px, calc(var(--u) * 2.9), 24px); }
+.choose .orow { margin-top: 0; justify-content: center; }
+.kinds { min-height: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--gap); }
+.kind { min-width: 0; display: flex; align-items: center; justify-content: center; gap: calc(var(--u) * 2.6); padding: calc(var(--u) * 2.4); border: var(--bd) solid #FFFFFF; border-radius: var(--r); background: #FFFFFF; box-shadow: 0 calc(var(--u) * 0.6) 0 #EBCB55; font-family: var(--font-display); transition: transform .12s; }
+.kind:active { transform: scale(.97); }
+.kind.on { border-color: var(--ink); }
+.kpic { flex: 0 0 auto; width: clamp(54px, calc(var(--u) * 23), 210px); height: clamp(54px, calc(var(--u) * 23), 210px); }
+.ktxt { min-width: 0; display: flex; flex-direction: column; align-items: flex-start; gap: calc(var(--u) * 1.4); }
+.ktxt b { font-weight: 400; font-size: clamp(19px, calc(var(--u) * 4.9), 44px); line-height: 1.1; white-space: nowrap; }
+.kminis { display: flex; gap: calc(var(--u) * 0.5); }
+.kminis svg { width: clamp(20px, calc(var(--u) * 5.6), 50px); height: clamp(20px, calc(var(--u) * 5.6), 50px); }
+@media (min-height: 600px) {        /* 태블릿처럼 세로로 넉넉한 화면: 그림을 위에, 글을 아래에 두어 크게 */
+  .choose .kind { flex-direction: column; gap: calc(var(--u) * 1.6); }
+  .choose .kpic { width: calc(var(--u) * 30); height: calc(var(--u) * 30); }
+  .choose .ktxt { align-items: center; }
+}
+.portrait .choose .kind { flex-direction: row; gap: calc(var(--u) * 2.6); }
+.portrait .choose .ktxt { align-items: flex-start; }
 .primary { min-height: 52px; padding: 0 1.3em; border-radius: 999px; background: var(--night-bar); color: #FFFFFF; font-family: var(--font-display); font-size: clamp(16px, calc(var(--u) * 3), 24px); white-space: nowrap; }
 
 /* 세로로 들었을 때: 줄을 위아래로 쌓고 밀어서 본다 */
@@ -189,7 +217,7 @@ svg { display: block; }
 .portrait .lane { flex: 0 0 auto; flex-direction: column; }
 .portrait .kid { width: auto; flex-direction: row; justify-content: flex-start; gap: 12px; }
 .portrait .lane .ava { width: clamp(36px, calc(var(--u) * 8.2), 70px); }
-.portrait .tiles.n6 { --tc: 3; grid-auto-rows: auto; }
+.portrait .tiles.n6, .portrait .tiles.n5 { --tc: 3; grid-auto-rows: auto; }
 .portrait .tiles.n3 { grid-auto-rows: auto; }
 .portrait .tile { aspect-ratio: 1 / 1.12; }
 .portrait .tiles.n3 .tile { aspect-ratio: 1 / 1.3; }
@@ -198,6 +226,8 @@ svg { display: block; }
 .portrait .msg .big { white-space: normal; }
 .portrait .offday { flex: 1 0 auto; flex-direction: column; text-align: center; }
 .portrait .offday .orow { justify-content: center; }
+.portrait .kinds { grid-template-columns: minmax(0, 1fr); }
+.portrait .choose .kpic { width: calc(var(--u) * 16); height: calc(var(--u) * 16); }
 
 /* ---------- 기록과 통계 ---------- */
 .stats { height: 100%; display: flex; flex-direction: column; background: var(--ground); }
@@ -253,7 +283,10 @@ svg { display: block; }
 .pbar i.alt { background: var(--soft); }
 .cells { display: grid; gap: 8px; text-align: center; }
 .cells.n6 { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+.cells.n5 { grid-template-columns: repeat(5, minmax(0, 1fr)); }
 .cells.n3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.ktag { display: inline-flex; align-items: center; gap: 6px; min-height: 36px; padding: 0 14px 0 8px; border-radius: 999px; background: #FFF3C4; font-family: var(--font-display); font-size: 17px; white-space: nowrap; }
+.ktag svg { width: 26px; height: 26px; }
 .tcell { position: relative; padding: 8px 2px; display: flex; flex-direction: column; align-items: center; gap: 2px; border-radius: 16px; background: var(--ground); min-width: 0; }
 .tcell em { position: absolute; top: 6px; left: 6px; width: 20px; height: 20px; border-radius: 50%; background: var(--ink); color: #FFFFFF; font-style: normal; font-family: var(--font-display); font-size: 13px; line-height: 20px; }
 .tcell .tpic { width: 44px; height: 44px; }
@@ -298,7 +331,7 @@ svg { display: block; }
 @media (max-width: 860px) {
   .sbody.day { grid-template-columns: minmax(0, 1fr); }
   .cgrid { grid-template-columns: minmax(0, 1fr); }
-  .cells.n6 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .cells.n6, .cells.n5 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .sbar h1 { font-size: 22px; }
 }
 
@@ -311,7 +344,13 @@ svg { display: block; }
 .sheet h3 { font-family: var(--font-display); font-weight: 400; font-size: 19px; margin-bottom: 6px; }
 .sheet p { font-size: 14px; line-height: 1.55; color: var(--ink-soft); margin-bottom: 8px; word-break: keep-all; }
 .x { width: 44px; height: 44px; border-radius: 14px; background: #E9EDF5; font-size: 26px; line-height: 1; }
-.row2 { display: flex; flex-wrap: wrap; gap: 10px; }
+.row2 { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+.row2 .stepper { margin-bottom: 0; }
+.row2 .btn { align-self: center; }
+.sheet .kinds { align-self: stretch; --u: clamp(3.4px, 1.1vh, 5px); --gap: 12px; --r: 20px; --bd: 4px; }
+.sheet .kind { box-shadow: 0 0 0 2px #C9D3E6; }
+.sheet .kind.on { box-shadow: 0 0 0 2px var(--ink); }
+.ver { font-size: 12px; color: var(--ink-soft); text-align: right; }
 .stepper { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; font-family: var(--font-display); font-size: 19px; }
 .stp { width: 48px; height: 48px; border-radius: 16px; background: #E9EDF5; font-size: 28px; line-height: 1; }
 .stepper b { min-width: 3em; text-align: center; font-weight: 400; font-size: 26px; }
@@ -340,6 +379,16 @@ svg { display: block; }
 .hold { touch-action: none; }
 .hold::before { content: ''; position: absolute; inset: 0; background: currentColor; opacity: .16; transform: scaleX(0); transform-origin: left; }
 .hold.holding::before { transform: scaleX(1); transition: transform .8s linear; }
+#alarm:empty { display: none; }
+.ringing #modal { padding-top: calc(env(safe-area-inset-top) + var(--ring-h, 110px)); }   /* 알람이 울리는 동안 창은 알림 아래로 내려온다 */
+#alarm { position: fixed; z-index: 25; top: calc(env(safe-area-inset-top) + 6px); left: 50%; transform: translateX(-50%); width: max-content; max-width: calc(100% - 16px); --a: clamp(3.4px, min(1vw, 1.25vh), 7.5px); }
+.ring { display: flex; align-items: center; gap: calc(var(--a) * 2.2); padding: calc(var(--a) * 1.3) calc(var(--a) * 2); border: calc(var(--a) * 0.6) solid #B4232A; border-radius: calc(var(--a) * 4.4); background: #E5484D; color: #FFFFFF; font-family: var(--font-display); box-shadow: 0 8px 24px rgba(23, 28, 63, .35); }
+.rpic { flex: 0 0 auto; width: calc(var(--a) * 11); height: calc(var(--a) * 11); animation: wiggle .45s ease-in-out infinite; }
+.ring.quiet .rpic { animation: none; }
+.rtxt { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.rtxt b { font-weight: 400; font-size: calc(var(--a) * 4.6); line-height: 1.12; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.rtxt span { font-size: max(12px, calc(var(--a) * 2.9)); line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.roff { flex: 0 0 auto; min-height: 44px; height: calc(var(--a) * 9.4); padding: 0 calc(var(--a) * 3.4); border-radius: 999px; background: #FFFFFF; color: #B4232A; font-family: var(--font-display); font-size: max(17px, calc(var(--a) * 4.2)); white-space: nowrap; box-shadow: 0 4px 0 #8F1B21; }
 #toast { position: fixed; left: 50%; bottom: max(18px, env(safe-area-inset-bottom)); transform: translate(-50%, 20px); z-index: 30; max-width: calc(100% - 32px); padding: 12px 22px; border-radius: 999px; background: var(--ink); color: #FFFFFF; font-family: var(--font-display); font-size: 19px; text-align: center; opacity: 0; pointer-events: none; transition: opacity .2s, transform .2s; }
 #toast.show { opacity: 1; transform: translate(-50%, 0); }
 
@@ -348,6 +397,8 @@ svg { display: block; }
 @keyframes fall { to { transform: translateY(calc(var(--up) * 80)) rotate(560deg); } }
 @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.06); } }
 @keyframes shake { 20%, 60% { transform: translateX(-8px); } 40%, 80% { transform: translateX(8px); } }
+@keyframes wiggle { 0%, 100% { transform: rotate(-11deg); } 50% { transform: rotate(11deg); } }
+@keyframes late { 0%, 100% { box-shadow: 0 0 0 0 rgba(229, 72, 77, 0); } 50% { box-shadow: 0 0 0 calc(var(--u) * 0.9) rgba(229, 72, 77, .4); } }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }
   .confetti { display: none; }
@@ -438,7 +489,31 @@ svg { display: block; }
 <path d="M80 58h80v34c0 32-16 52-40 52s-40-20-40-52z" fill="#FFC61A" stroke="#1F2440" stroke-width="5" stroke-linejoin="round"/>
 <path d="M120 76l5.6 11.4 12.6 1.8-9.1 8.9 2.1 12.5L120 104.7l-11.2 5.9 2.1-12.5-9.1-8.9 12.6-1.8z" fill="#FFFFFF" stroke="#1F2440" stroke-width="4" stroke-linejoin="round"/>
 <rect x="88" y="166" width="64" height="20" rx="6" fill="#F5A800" stroke="#1F2440" stroke-width="5" stroke-linejoin="round"/>
-<rect x="74" y="184" width="92" height="22" rx="7" fill="#B9773A" stroke="#1F2440" stroke-width="5" stroke-linejoin="round"/></symbol><symbol id="a-alien" viewBox="0 0 120 120"><g transform="translate(60 60) scale(0.86) translate(-60 -60)">
+<rect x="74" y="184" width="92" height="22" rx="7" fill="#B9773A" stroke="#1F2440" stroke-width="5" stroke-linejoin="round"/></symbol><symbol id="p-church" viewBox="0 0 120 120"><path d="M60 3v17M52 10h16" fill="none" stroke="#1F2440" stroke-width="10" stroke-linecap="round"/>
+<path d="M60 3v17M52 10h16" fill="none" stroke="#FFC61A" stroke-width="4" stroke-linecap="round"/>
+<rect x="47" y="34" width="26" height="26" fill="#FFFFFF" stroke="#1F2440" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M42 36L60 18l18 18z" fill="#F0604D" stroke="#1F2440" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+<rect x="20" y="62" width="80" height="48" fill="#FFFFFF" stroke="#1F2440" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M10 64l50-24 50 24z" fill="#F0604D" stroke="#1F2440" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="60" cy="56" r="6" fill="#7CC4FF" stroke="#1F2440" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M49 110V90a11 11 0 0 1 22 0v20z" fill="#B9773A" stroke="#1F2440" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M60 82v28" fill="none" stroke="#1F2440" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M29 98V84a5.5 5.5 0 0 1 11 0v14z" fill="#7CC4FF" stroke="#1F2440" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M80 98V84a5.5 5.5 0 0 1 11 0v14z" fill="#7CC4FF" stroke="#1F2440" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/></symbol><symbol id="p-home" viewBox="0 0 120 120"><path d="M88 16c-3-5 4-9 8-5 4-4 11 0 8 5-2 4-6 6-8 8-2-2-6-4-8-8z" fill="#FF9DB0" stroke="#1F2440" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>
+<rect x="80" y="34" width="14" height="24" fill="#F0604D" stroke="#1F2440" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+<rect x="22" y="58" width="76" height="52" fill="#FFE9C2" stroke="#1F2440" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M8 62l52-40 52 40z" fill="#19B5A5" stroke="#1F2440" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+<rect x="32" y="74" width="20" height="36" rx="3" fill="#B9773A" stroke="#1F2440" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="47" cy="93" r="2.5" fill="#FFD84D"/>
+<rect x="62" y="72" width="26" height="22" rx="4" fill="#7CC4FF" stroke="#1F2440" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M75 72v22M62 83h26" fill="none" stroke="#1F2440" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/></symbol><symbol id="p-alarm" viewBox="0 0 120 120"><path d="M10 34q-6 10 0 22M110 34q6 10 0 22" fill="none" stroke="#F08519" stroke-width="6" stroke-linecap="round"/>
+<path d="M36 104l-9 11M84 104l9 11" fill="none" stroke="#1F2440" stroke-width="8" stroke-linecap="round"/>
+<circle cx="33" cy="24" r="15" fill="#F0604D" stroke="#1F2440" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="87" cy="24" r="15" fill="#F0604D" stroke="#1F2440" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="60" cy="68" r="42" fill="#FFD84D" stroke="#1F2440" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="60" cy="68" r="31" fill="#FFFFFF" stroke="#1F2440" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M60 68V47M60 68l15 9" fill="none" stroke="#1F2440" stroke-width="6" stroke-linecap="round"/>
+<circle cx="60" cy="68" r="4.5" fill="#F0604D"/></symbol><symbol id="a-alien" viewBox="0 0 120 120"><g transform="translate(60 60) scale(0.86) translate(-60 -60)">
 <path d="M46 24L38 9M74 24L82 9" fill="none" stroke="#1F2440" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/><circle cx="37" cy="8" r="6" fill="#FFC61A" stroke="#1F2440" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/><circle cx="83" cy="8" r="6" fill="#FFC61A" stroke="#1F2440" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>
 <path d="M60 16C86 16 98 38 94 60C90 84 74 104 60 104C46 104 30 84 26 60C22 38 34 16 60 16Z" fill="#7ED957" stroke="#1F2440" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
 <ellipse cx="43" cy="56" rx="11.5" ry="16" fill="#1F2440" transform="rotate(20 43 56)"/><ellipse cx="77" cy="56" rx="11.5" ry="16" fill="#1F2440" transform="rotate(-20 77 56)"/>
@@ -618,6 +693,7 @@ svg { display: block; }
 </g></symbol></svg>
 <div id="app"></div>
 <div id="modal"></div>
+<div id="alarm"></div>
 <div id="toast" role="status" aria-live="polite"></div>
 <script>
 (() => {
@@ -658,7 +734,17 @@ const TASKS = {
   ],
 };
 const ROUTINE = { am: '아침', pm: '저녁' };
+/* 아침 루틴은 날의 종류에 따라 다르다. 쉬는 날에는 교회 가는 날인지 아닌지를 골라야 정해진다. */
+const AM_KINDS = {
+  work: ['eat', 'wash', 'lotion', 'dress', 'bag', 'shoes'],
+  church: ['eat', 'wash', 'lotion', 'dress', 'shoes'],
+  home: ['eat', 'wash', 'lotion'],
+};
+const KINDS = { work: { name: '등원하는 날', pic: 'bag' }, church: { name: '교회 가는 날', pic: 'church' }, home: { name: '교회 안 가는 날', pic: 'home' } };
 const EVENING_FROM = 14;            // 오후 2시부터는 저녁 화면
+const ALARM_SOUND_MS = 5 * 60000;   // 알람 소리는 5분 울리고 멎는다 (화면의 알림은 남는다)
+const ALARM_WINDOW_MS = 2 * 3600000; // 두 시간 넘게 늦은 알람은 울리지 않는다
+const APP_VERSION = '1.1';
 const WD = ['일', '월', '화', '수', '목', '금', '토'];
 
 /* 공휴일. 날짜가 정해진 날은 규칙으로 계산하고, 음력 명절은 한국천문연구원 음양력 기준 날짜를 2040년까지 넣었다.
@@ -675,7 +761,7 @@ const LUNAR = {
 
 /* ------------------------------------------------------------------ 작은 도구 */
 const $ = (s) => document.querySelector(s);
-const app = $('#app'), modalRoot = $('#modal'), toastEl = $('#toast');
+const app = $('#app'), modalRoot = $('#modal'), toastEl = $('#toast'), alarmRoot = $('#alarm');
 const now = () => Date.now() + (window.__shift || 0);
 const pad = (n) => String(n).padStart(2, '0');
 const cl = (lo, v, hi) => Math.min(hi, Math.max(lo, v));
@@ -721,11 +807,14 @@ function normalize(raw) {
       icon: ICON_IDS.includes(k.icon) ? k.icon : slot.icon,
     };
   });
+  const al = s.alarm && typeof s.alarm === 'object' ? s.alarm : {};
   return {
     v: 2, kids,
     count: cl(1, Number.isInteger(s.count) ? s.count : 2, MAX_KIDS),
     sound: s.sound !== false,
+    alarm: { on: al.on !== false, min: cl(5, Math.round(Number(al.min) / 5) * 5 || 30, 90) },   // 아침밥 알람
     off: s.off && typeof s.off === 'object' ? s.off : {},
+    kind: s.kind && typeof s.kind === 'object' ? s.kind : {},                                    // 쉬는 날에 고른 아침 루틴
     days: s.days && typeof s.days === 'object' ? s.days : {},
   };
 }
@@ -765,6 +854,22 @@ function autoOff(key) {
   return d.getDay() === 0 || d.getDay() === 6 || holidaysOf(d.getFullYear()).has(key);
 }
 const isOff = (key) => (key in S.off ? !!S.off[key] : autoOff(key));
+/* 그날 아침 루틴의 종류. 쉬는 날인데 아직 고르지 않았으면 null. */
+const kindOfDay = (key) => (isOff(key) ? (S.kind[key] === 'church' || S.kind[key] === 'home' ? S.kind[key] : null) : 'work');
+const seKind = (se) => (se && AM_KINDS[se.kind] ? se.kind : 'work');                 // 기록에 남은 종류 (예전 기록은 등원하는 날)
+const amTasks = (kind) => TASKS.am.filter((t) => AM_KINDS[AM_KINDS[kind] ? kind : 'work'].includes(t.id));
+const tasksFor = (se, mode) => (mode === 'pm' ? TASKS.pm : amTasks(seKind(se)));
+const boardTasks = (mode) => (mode === 'pm' ? TASKS.pm : amTasks(kindOfDay(ui.today)));
+function syncKind(key) {              // 오늘 아침 기록의 종류를 화면의 루틴과 맞춘다
+  const se = sess(key, 'am', false), k = kindOfDay(key);
+  if (se && k && se.kind !== k) { se.kind = k; return true; }
+  return false;
+}
+function setKind(key, k) {
+  if (k === 'work') { if (autoOff(key)) S.off[key] = false; else delete S.off[key]; delete S.kind[key]; }
+  else if (k === 'church' || k === 'home') { if (autoOff(key)) delete S.off[key]; else S.off[key] = true; S.kind[key] = k; }
+  syncKind(key); save();
+}
 
 /* ------------------------------------------------------------------ 기록과 시간 계산 */
 function sess(key, mode, create) {
@@ -774,8 +879,8 @@ function sess(key, mode, create) {
   return day[mode] || null;
 }
 /* 시작 → 첫 완료 = 첫 번째 할 일 시간, 완료 → 다음 완료 = 다음 할 일 시간 (누른 순서대로) */
-function timeline(se, kid, mode) {
-  const tasks = TASKS[mode], done = (se.done && se.done[kid]) || {};
+function timeline(se, kid, mode, list) {
+  const tasks = list || tasksFor(se, mode), done = (se.done && se.done[kid]) || {};
   const items = tasks.filter((t) => done[t.id]).map((t) => ({ t, at: done[t.id] })).sort((x, y) => x.at - y.at);
   let prev = se.start;
   items.forEach((it) => { it.dur = Math.max(0, it.at - prev); prev = it.at; });
@@ -783,37 +888,182 @@ function timeline(se, kid, mode) {
   return { items, count: items.length, complete, end: complete ? prev : null, total: complete ? prev - se.start : null };
 }
 let lastPlan = null;
-window.__routine = { timeline, holidaysOf, isOff: (k) => isOff(k), state: () => S, plan: () => lastPlan };
+window.__routine = {
+  timeline, holidaysOf, isOff: (k) => isOff(k), state: () => S, plan: () => lastPlan,
+  kind: () => kindOfDay(ui.today), tasks: () => boardTasks(ui.mode).map((t) => t.id), alarm: () => (ring ? Object.assign({}, ring) : null),
+  sound: () => ({ via: lastVia, playing: !!(alarmEl && !alarmEl.paused && !alarmEl.muted), beeps: !!fallbackTimer, testing: !!testTimer, primed, ready: audioReady }),
+};
 
 /* ------------------------------------------------------------------ 화면 상태 */
 const first = new Date(now());
 const ui = {
   view: 'board', today: dkey(first), auto: autoMode(first), mode: autoMode(first),
   peek: {}, lock: {}, just: null,
-  tab: 'day', day: dkey(first), month: { y: first.getFullYear(), m: first.getMonth() }, sr: autoMode(first), cr: autoMode(first), period: 'two',
+  tab: 'day', day: dkey(first), month: { y: first.getFullYear(), m: first.getMonth() }, sr: autoMode(first), cr: autoMode(first), ck: 'work', period: 'two',
   modal: null, pick: null,
 };
 
 /* ------------------------------------------------------------------ 소리, 화면 켜 두기 */
 let actx = null;
+function audioCtx() {
+  try {
+    actx = actx || new (window.AudioContext || window.webkitAudioContext)();
+    if (actx.state !== 'running') { const p = actx.resume(); if (p && p.catch) p.catch(() => {}); }
+  } catch (e) { /* 소리를 못 내는 곳에서는 조용히 */ }
+  return actx;
+}
 function tone(freqs, step = 0.12) {
   if (!S.sound) return;
   try {
-    actx = actx || new (window.AudioContext || window.webkitAudioContext)();
-    if (actx.state === 'suspended') actx.resume();
-    const t0 = actx.currentTime;
+    const ctx = audioCtx();
+    if (!ctx) return;
+    const t0 = ctx.currentTime;
     freqs.forEach((f, i) => {
-      const o = actx.createOscillator(), g = actx.createGain(), t = t0 + i * step;
+      const o = ctx.createOscillator(), g = ctx.createGain(), t = t0 + i * step;
       o.type = 'sine'; o.frequency.value = f;
       g.gain.setValueAtTime(0.0001, t);
       g.gain.exponentialRampToValueAtTime(0.22, t + 0.02);
       g.gain.exponentialRampToValueAtTime(0.0001, t + step * 2.2);
-      o.connect(g); g.connect(actx.destination);
+      o.connect(g); g.connect(ctx.destination);
       o.start(t); o.stop(t + step * 2.4);
     });
   } catch (e) { /* 소리를 못 내는 곳에서는 조용히 */ }
 }
 const sfx = { start: () => tone([659, 880]), done: () => tone([784, 1047]), undo: () => tone([440]), party: () => tone([523, 659, 784, 1047, 1319], 0.13) };
+
+/* ------------------------------------------------------------------ 아침밥 알람
+   시작하고 정한 시간이 지났는데 아침을 다 못 먹은 아이가 있으면 울린다. '알람 끄기'를 누르거나 모두 다 먹으면 멈춘다.
+   소리는 '띠띠띠띠' 1.5초짜리를 만들어 소리 파일처럼 되풀이한다 (이렇게 하면 무음 모드에서도 들린다).
+   그 방법이 막힌 곳에서는 효과음과 같은 방식으로 울린다. */
+const BEEP = { hz: 1568, n: 4, every: 0.2, len: 0.13, loop: 1.5 };
+function alarmWav() {
+  const rate = 22050, total = Math.round(rate * BEEP.loop), buf = new ArrayBuffer(44 + total * 2), v = new DataView(buf);
+  const str = (o, x) => { for (let i = 0; i < x.length; i++) v.setUint8(o + i, x.charCodeAt(i)); };
+  str(0, 'RIFF'); v.setUint32(4, 36 + total * 2, true); str(8, 'WAVE'); str(12, 'fmt '); v.setUint32(16, 16, true);
+  v.setUint16(20, 1, true); v.setUint16(22, 1, true); v.setUint32(24, rate, true); v.setUint32(28, rate * 2, true);
+  v.setUint16(32, 2, true); v.setUint16(34, 16, true); str(36, 'data'); v.setUint32(40, total * 2, true);
+  for (let b = 0; b < BEEP.n; b++) {
+    const s0 = Math.round(rate * b * BEEP.every), n = Math.round(rate * BEEP.len);
+    for (let i = 0; i < n; i++) {
+      const t = i / rate, env = Math.min(1, i / 120, (n - i) / 400);
+      const y = 0.7 * Math.sin(2 * Math.PI * BEEP.hz * t) + 0.3 * Math.sin(4 * Math.PI * BEEP.hz * t);
+      v.setInt16(44 + (s0 + i) * 2, Math.round(32767 * 0.8 * env * y), true);
+    }
+  }
+  return new Blob([buf], { type: 'audio/wav' });
+}
+let alarmEl = null, audioReady = false, primed = false, ring = null, fallbackTimer = null, testTimer = null, lastVia = 'none';
+function alarmAudio() {
+  if (alarmEl) return alarmEl;
+  try { alarmEl = new Audio(URL.createObjectURL(alarmWav())); alarmEl.loop = true; alarmEl.preload = 'auto'; } catch (e) { alarmEl = null; }
+  return alarmEl;
+}
+function beepBurst() {                 // 소리 파일을 못 쓸 때의 알람 소리
+  try {
+    const ctx = audioCtx();
+    if (!ctx) return;
+    const t0 = ctx.currentTime + 0.02;
+    for (let b = 0; b < BEEP.n; b++) {
+      const o = ctx.createOscillator(), g = ctx.createGain(), t = t0 + b * BEEP.every;
+      o.type = 'triangle'; o.frequency.value = BEEP.hz;
+      g.gain.setValueAtTime(0.0001, t);
+      g.gain.exponentialRampToValueAtTime(0.5, t + 0.01);
+      g.gain.setValueAtTime(0.5, t + BEEP.len - 0.03);
+      g.gain.exponentialRampToValueAtTime(0.0001, t + BEEP.len);
+      o.connect(g); g.connect(ctx.destination);
+      o.start(t); o.stop(t + BEEP.len + 0.02);
+    }
+  } catch (e) { /* 소리를 못 내는 곳에서는 화면으로만 알린다 */ }
+}
+function silence() {
+  clearInterval(fallbackTimer); fallbackTimer = null;
+  if (alarmEl) { try { alarmEl.pause(); } catch (e) { /* 준비 전 */ } try { alarmEl.currentTime = 0; } catch (e) { /* 준비 전 */ } }
+}
+function stopSound() { clearTimeout(testTimer); testTimer = null; silence(); }
+function startSound() {
+  silence();
+  const note = (via) => { lastVia = via; if (ring) ring.via = via; };
+  const wanted = () => !!((ring && ring.sounding) || testTimer);
+  const fallback = () => { if (!wanted()) return; note('beeps'); beepBurst(); clearInterval(fallbackTimer); fallbackTimer = setInterval(beepBurst, BEEP.loop * 1000); };
+  const el = alarmAudio();
+  if (!el) { fallback(); return; }
+  try {
+    el.muted = false; el.volume = 1;
+    try { el.currentTime = 0; } catch (e) { /* 준비 전 */ }
+    const p = el.play();
+    if (p && p.then) p.then(() => { if (wanted()) note('file'); else { try { el.pause(); } catch (e) { /* 그대로 둠 */ } } }).catch(fallback);
+    else note('file');
+  } catch (e) { fallback(); }
+}
+/* 아이폰·아이패드는 손으로 누른 순간에 준비해 둔 소리만 나중에 저절로 낼 수 있다.
+   그래서 무엇이든 누를 때마다 소리 낼 준비를 하고, 알람이 아직 남아 있으면 소리 없이 한 번 틀었다 멈춰 둔다. */
+function alarmAhead(t) {
+  if (!S.alarm.on || ring) return false;
+  const se = sess(ui.today, 'am', false);
+  if (!se || !se.start || se.alarmOff) return false;
+  return t < se.start + S.alarm.min * 60000 && kids().some((k) => !(se.done[k.id] && se.done[k.id].eat));
+}
+function primeAlarm() {
+  const el = alarmAudio();
+  if (!el || ring || testTimer || !S.alarm.on) return;
+  const restore = () => { el.muted = false; el.volume = 1; };
+  try {
+    el.muted = true; el.volume = 0;
+    const done = () => { primed = true; if (!(ring && ring.sounding) && !testTimer) { try { el.pause(); el.currentTime = 0; } catch (e) { /* 그대로 둠 */ } restore(); } };
+    const p = el.play();
+    if (p && p.then) p.then(done).catch(restore); else done();
+  } catch (e) { restore(); }
+}
+function unlockAudio() {
+  audioCtx();
+  const el = alarmAudio();
+  if (el && !audioReady) { try { el.load(); audioReady = true; } catch (e) { /* 다음에 누를 때 다시 */ } }
+  if (ring && ring.sounding && ring.via !== 'file') startSound();      // 소리 없이 울리던 알람은 누른 김에 다시 울려 본다
+  else if (!primed && alarmAhead(now())) primeAlarm();
+}
+function testAlarm() {                 // 설정의 '알람 소리 들어 보기'
+  if (ring) return;
+  stopSound();
+  testTimer = setTimeout(() => { testTimer = null; if (!(ring && ring.sounding)) silence(); }, 3200);
+  startSound();
+  toast('알람 소리를 3초 들려줘요');
+}
+function alarmDue(t) {
+  if (!S.alarm.on) return null;
+  const se = sess(ui.today, 'am', false);
+  if (!se || !se.start || se.alarmOff || !kindOfDay(ui.today)) return null;
+  const due = se.start + S.alarm.min * 60000;
+  if (t < due || t >= due + ALARM_WINDOW_MS) return null;
+  const late = kids().filter((k) => !(se.done[k.id] && se.done[k.id].eat)).map((k) => k.id);
+  return late.length ? late : null;
+}
+function renderAlarm() {
+  document.body.classList.toggle('ringing', !!ring);
+  if (!ring) { alarmRoot.innerHTML = ''; return; }
+  const names = ring.late.map((id) => esc(nameOf(S.kids.find((k) => k.id === id)))).join(', ');
+  alarmRoot.innerHTML = `<div class="ring${ring.sounding ? '' : ' quiet'}" role="alert">${P('alarm', 'rpic')}
+    <div class="rtxt"><b>아침밥 ${ring.min}분이 지났어요!</b><span>${names} 아직 먹는 중이에요</span></div>
+    <button class="roff" data-act="alarm-off">알람 끄기</button></div>`;
+  document.body.style.setProperty('--ring-h', `${Math.ceil(alarmRoot.getBoundingClientRect().height) + 12}px`);
+}
+/* 알람 상태를 지금 시각에 맞춘다. 타일 표시가 달라져서 판을 다시 그려야 하면 true. */
+function checkAlarm(t) {
+  const late = alarmDue(t);
+  if (!late) {
+    if (!ring) return false;
+    ring = null; stopSound(); renderAlarm();
+    return true;
+  }
+  if (!ring) {
+    ring = { late, min: S.alarm.min, since: t, sounding: true, via: 'none' };
+    startSound(); renderAlarm();
+    return true;
+  }
+  let changed = false;
+  if (ring.late.join() !== late.join()) { ring.late = late; renderAlarm(); changed = true; }
+  if (ring.sounding && t - ring.since >= ALARM_SOUND_MS) { ring.sounding = false; stopSound(); renderAlarm(); }
+  return changed;
+}
 
 let wake = null;
 async function keepAwake(on) {
@@ -824,7 +1074,8 @@ async function keepAwake(on) {
 }
 function syncAwake() {
   const se = sess(ui.today, ui.mode, false), t = now();
-  const running = !!(se && se.start) && t - se.start < 3 * 3600000 && !kids().every((k) => timeline(se, k.id, ui.mode).complete);
+  const tasks = boardTasks(ui.mode);
+  const running = !!(se && se.start) && t - se.start < 3 * 3600000 && !kids().every((k) => timeline(se, k.id, ui.mode, tasks).complete);
   keepAwake(running && !document.hidden);
 }
 
@@ -836,8 +1087,8 @@ function toast(msg) {
 }
 
 /* ------------------------------------------------------------------ 아침·저녁 판 */
-function elapsedText(se, mode, t) {
-  const tls = kids().map((k) => timeline(se, k.id, mode));
+function elapsedText(se, mode, t, tasks) {
+  const tls = kids().map((k) => timeline(se, k.id, mode, tasks));
   if (tls.every((x) => x.complete)) return `모두 끝! ${fmtDur(Math.max(...tls.map((x) => x.end)) - se.start)}`;
   const m = Math.floor((t - se.start) / 60000);
   return m < 1 ? '방금 시작' : `${m}분째`;
@@ -848,8 +1099,9 @@ function confettiHTML() {
   for (let i = 0; i < 28; i++) h += `<i style="left:${(i * 3.6 + Math.random() * 3).toFixed(1)}%;background:${colors[i % colors.length]};animation-delay:${(Math.random() * 0.5).toFixed(2)}s;transform:rotate(${Math.floor(Math.random() * 180)}deg)"></i>`;
   return `<div class="confetti" aria-hidden="true">${h}</div>`;
 }
-function laneHTML(k, se, mode) {
-  const tasks = TASKS[mode], tl = se ? timeline(se, k.id, mode) : { items: [], count: 0, complete: false };
+function laneHTML(k, se, mode, tasks) {
+  const tl = se ? timeline(se, k.id, mode, tasks) : { items: [], count: 0, complete: false };
+  const lateKid = mode === 'am' && !!ring && ring.late.includes(k.id);
   const durOf = {}; tl.items.forEach((it) => { durOf[it.t.id] = it.dur; });
   const fresh = !!(ui.just && ui.just.party && ui.just.kid === k.id), nm = esc(nameOf(k));
   const kid = `<div class="kid">${A(k)}<div class="name">${nm}</div>
@@ -870,28 +1122,38 @@ function laneHTML(k, se, mode) {
       </div></section>`;
   }
   const tiles = tasks.map((t) => {
-    const done = t.id in durOf, just = ui.just && ui.just.kid === k.id && ui.just.task === t.id;
-    return `<button class="tile${done ? ' done' : ''}${just ? ' just' : ''}" data-act="task" data-kid="${k.id}" data-task="${t.id}" aria-pressed="${done}" aria-label="${nm} ${t.name}${done ? ', 다 했어요' : ''}">
-      ${done ? P('star', 'sticker') : ''}${P(t.pic)}<span class="lbl"><span class="l2">${t.label.join('<br>')}</span><span class="l1">${t.name}</span></span><span class="chip">${done ? fmtDur(durOf[t.id]) : '0분'}</span></button>`;
+    const done = t.id in durOf, just = ui.just && ui.just.kid === k.id && ui.just.task === t.id, late = lateKid && t.id === 'eat' && !done;
+    return `<button class="tile${done ? ' done' : ''}${just ? ' just' : ''}${late ? ' late' : ''}" data-act="task" data-kid="${k.id}" data-task="${t.id}" aria-pressed="${done}" aria-label="${nm} ${t.name}${done ? ', 다 했어요' : ''}${late ? ', 알람이 울려요' : ''}">
+      ${done ? P('star', 'sticker') : late ? P('alarm', 'sticker') : ''}${P(t.pic)}<span class="lbl"><span class="l2">${t.label.join('<br>')}</span><span class="l1">${t.name}</span></span><span class="chip">${done ? fmtDur(durOf[t.id]) : '0분'}</span></button>`;
   }).join('');
   return `<section class="lane ${k.color}" data-kid="${k.id}" aria-label="${nm}">${kid}<div class="tiles n${tasks.length}">${tiles}</div></section>`;
+}
+function kindButtons(cur) {
+  return `<div class="kinds">${['church', 'home'].map((k) => {
+    const tasks = amTasks(k);
+    return `<button class="kind${cur === k ? ' on' : ''}" data-act="kind" data-kind="${k}" aria-pressed="${cur === k}" aria-label="${KINDS[k].name}: ${tasks.map((t) => t.name).join(', ')}">${P(KINDS[k].pic, 'kpic')}<span class="ktxt"><b>${KINDS[k].name}</b><span class="kminis">${tasks.map((t) => P(t.pic, 'km')).join('')}</span></span></button>`;
+  }).join('')}</div>`;
 }
 function boardHTML() {
   const t = now(), d = new Date(t), key = ui.today, mode = ui.mode;
   const se = sess(key, mode, false), started = !!(se && se.start);
-  const off = mode === 'am' && isOff(key) && !started;
+  const kind = mode === 'am' ? kindOfDay(key) : null, tasks = boardTasks(mode);
+  const choose = mode === 'am' && !kind;                                  // 쉬는 날 아침: 어떤 날인지 먼저 고른다
+  const chip = mode === 'am' && kind && (isOff(key) || autoOff(key))
+    ? `<button class="kchip" data-act="kind-open" aria-label="오늘은 ${KINDS[kind].name}. 눌러서 바꾸기">${P(KINDS[kind].pic, 'kp')}<span>${KINDS[kind].name}</span></button>` : '';
   const seg = ['am', 'pm'].map((m) => `<button class="segbtn${mode === m ? ' on' : ''}" data-act="mode" data-mode="${m}" aria-pressed="${mode === m}">${P(m === 'am' ? 'sun' : 'moon', 'sp')}<span>${ROUTINE[m]}</span></button>`).join('');
-  const go = off ? '' : started
-    ? `<button class="timer" data-act="timer" aria-label="${clock(se.start)}에 시작했어요">${I.play.replace('currentColor', '#0A8540')}<span class="t0">${clock(se.start)} 시작</span><span class="tn" id="elapsed">${elapsedText(se, mode, t)}</span></button>`
+  const go = choose ? '' : started
+    ? `<button class="timer" data-act="timer" aria-label="${clock(se.start)}에 시작했어요">${I.play.replace('currentColor', '#0A8540')}<span class="t0">${clock(se.start)} 시작</span><span class="tn" id="elapsed">${elapsedText(se, mode, t, tasks)}</span></button>`
     : `<button class="start pulse" id="start" data-act="start">${I.play}<span>시작</span></button>`;
-  const body = off
-    ? `<section class="offday">${P('sun', 'opic')}<div><div class="big">오늘은 쉬는 날!</div><div class="sub">아침 준비는 쉬어요. 저녁에 만나요.</div>
-        <div class="orow"><button class="primary" data-act="mode" data-mode="pm">저녁 화면 보기</button><button class="ghost hold" data-act="today-on">오늘은 가는 날이에요 (꾹)</button></div></div></section>`
-    : kids().map((k) => laneHTML(k, se, mode)).join('');
+  const body = choose
+    ? `<section class="offday choose"><div class="chead"><div class="big">오늘은 쉬는 날!</div><div class="sub">아침에 할 일을 골라 주세요</div></div>
+        ${kindButtons(null)}
+        <div class="orow"><button class="ghost hold" data-act="kind" data-kind="work">오늘은 등원하는 날이에요 (꾹)</button></div></section>`
+    : kids().map((k) => laneHTML(k, se, mode, tasks)).join('');
   return `<div class="board ${mode}">
     <header class="top">
       <div class="seg" role="group" aria-label="아침과 저녁 바꾸기">${seg}</div>
-      <div class="when"><div class="date" id="date">${d.getMonth() + 1}월 ${d.getDate()}일 ${WD[d.getDay()]}요일</div><div class="clock" id="clock">${ampm(t)} ${clock(t)}</div></div>
+      <div class="when"><div class="date"><span id="date">${d.getMonth() + 1}월 ${d.getDate()}일<span class="wd"> ${WD[d.getDay()]}요일</span></span>${chip}</div><div class="clock" id="clock">${ampm(t)} ${clock(t)}</div></div>
       <div class="tools">${go}
         <button class="ibtn" data-act="stats" aria-label="기록과 통계 보기">${I.chart}</button>
         <button class="ibtn hold" data-act="settings" aria-label="설정 (꾹 누르기)">${I.sliders}</button>
@@ -922,7 +1184,7 @@ function planLanes() {
     em1: Math.max(...tasks.map((t) => t.name.length)) + 0.4,
     em2: Math.max(...tasks.flatMap((t) => t.label.map((l) => l.length))) + 0.4,
   });
-  const M = { am: measureTasks(TASKS.am), pm: measureTasks(TASKS.pm) };
+  const M = { am: measureTasks(boardTasks('am')), pm: measureTasks(TASKS.pm) };
 
   const inLane = (laneW, laneH, { T, em1, em2 }) => {
     let best = null;
@@ -932,7 +1194,7 @@ function planLanes() {
       const headH = cl(30, uh * 8.2, 70);
       const tw = laneW - padL * 2 - (head === 'side' ? kidW + padL : 0);
       const th = inner - (head === 'top' ? headH + padL * 0.6 : 0);
-      for (const tcols of (T === 6 ? [6, 3, 2] : [3])) {
+      for (const tcols of (T === 6 ? [6, 3, 2] : T === 5 ? [5, 3] : [3])) {
         const rows = Math.ceil(T / tcols);
         const tgap = cl(6, cl(3, th / rows / 35.6, 12) * 1.4, 14);
         const cw = (tw - tgap * (tcols - 1)) / tcols, ch = (th - tgap * (rows - 1)) / rows;
@@ -1015,17 +1277,17 @@ function calendarHTML() {
       <div class="calhead"><button class="nav" data-act="month" data-step="-1" aria-label="이전 달">${I.left}</button><span>${y}년 ${m + 1}월</span><button class="nav" data-act="month" data-step="1" aria-label="다음 달">${I.right}</button></div>
       <div class="wk">${WD.map((w) => `<span>${w}</span>`).join('')}</div>
       <div class="grid7">${cells}</div>
-      <div class="legend"><span>${P('star', 'mk')}모두 완료</span><span><i></i>일부만</span><span><b></b>쉬는 날(아침 없음)</span></div>
+      <div class="legend"><span>${P('star', 'mk')}모두 완료</span><span><i></i>일부만</span><span><b></b>쉬는 날</span></div>
     </section>
     <section class="cardx">
       <h3>${sd.getMonth() + 1}월 ${sd.getDate()}일은 ${off ? '쉬는 날' : '등원하는 날'}</h3>
-      <p>주말과 공휴일은 자동으로 쉬는 날이 되고, 방학이나 아픈 날, 선거일처럼 따로 정해지는 날은 여기서 직접 바꿀 수 있어요.</p>
+      <p>주말과 공휴일은 자동으로 쉬는 날이 되고, 방학이나 아픈 날, 선거일처럼 따로 정해지는 날은 여기서 직접 바꿀 수 있어요. 쉬는 날 아침에는 '교회 가는 날'과 '교회 안 가는 날' 중에서 골라요.</p>
       <button class="btn" data-act="toggle-off">${off ? '등원하는 날로 바꾸기' : '쉬는 날로 바꾸기'}</button>
     </section>
   </div>`;
 }
 function kidCardHTML(k, se, mode) {
-  const tasks = TASKS[mode], tl = timeline(se, k.id, mode);
+  const tasks = tasksFor(se, mode), tl = timeline(se, k.id, mode);
   const rest = tasks.filter((t) => !tl.items.some((it) => it.t.id === t.id));
   const sum = tl.items.reduce((a, it) => a + it.dur, 0) || 1;
   return `<section class="kcard ${k.color}" data-kid="${k.id}">
@@ -1041,27 +1303,29 @@ function kidCardHTML(k, se, mode) {
 }
 function dayDetailHTML() {
   const key = ui.day, d = fromKey(key), mode = ui.sr, se = S.days[key] && S.days[key][mode];
-  const head = `<div class="dhead"><h2>${d.getMonth() + 1}월 ${d.getDate()}일 ${WD[d.getDay()]}요일</h2><span class="grow"></span>${segRoutine('sr', mode)}</div>`;
+  const tag = mode === 'am' && se && se.start ? `<span class="ktag">${P(KINDS[seKind(se)].pic, 'kt')}${KINDS[seKind(se)].name}</span>` : '';
+  const head = `<div class="dhead"><h2>${d.getMonth() + 1}월 ${d.getDate()}일 ${WD[d.getDay()]}요일</h2>${tag}<span class="grow"></span>${segRoutine('sr', mode)}</div>`;
   if (!se || !se.start) {
-    const why = mode === 'am' && isOff(key) ? '쉬는 날이라 아침 준비가 없어요.' : `이 날 ${ROUTINE[mode]} 기록이 없어요.`;
+    const why = `이 날 ${ROUTINE[mode]} 기록이 없어요.`;
     return `<div class="col">${head}<div class="empty">${P(mode === 'am' ? 'sun' : 'moon', 'epic')}<p>${why}</p></div></div>`;
   }
   return `<div class="col">${head}${kids().map((k) => kidCardHTML(k, se, mode)).join('')}</div>`;
 }
-function collect(mode, period) {
+function collect(mode, period, kind) {
   const today = fromKey(ui.today), ks = kids();
   const from = period === 'two' ? dkey(new Date(today.getFullYear(), today.getMonth(), today.getDate() - 13)) : period === 'month' ? `${ui.today.slice(0, 8)}01` : '0000-00-00';
-  return Object.keys(S.days).filter((k) => k >= from && k <= ui.today && S.days[k][mode] && S.days[k][mode].start).sort()
+  return Object.keys(S.days).filter((k) => k >= from && k <= ui.today && S.days[k][mode] && S.days[k][mode].start && (mode === 'pm' || seKind(S.days[k].am) === kind)).sort()
     .map((k) => ({ key: k, tl: ks.map((kd) => timeline(S.days[k][mode], kd.id, mode)) }));
 }
 function chartTabHTML() {
-  const mode = ui.cr, rows = collect(mode, ui.period), tasks = TASKS[mode], ks = kids(), min = (ms) => ms / 60000;
+  const mode = ui.cr, kind = ui.ck, rows = collect(mode, ui.period, kind), tasks = mode === 'pm' ? TASKS.pm : amTasks(kind), ks = kids(), min = (ms) => ms / 60000;
+  const kindSeg = mode !== 'am' ? '' : `<div class="seg2" role="group" aria-label="아침 루틴 고르기">${Object.keys(KINDS).map((k) => `<button data-act="ckind" data-kind="${k}" class="${kind === k ? 'on' : ''}" aria-pressed="${kind === k}">${P(KINDS[k].pic, 'sp')}<span>${KINDS[k].name}</span></button>`).join('')}</div>`;
   const periods = [['two', '최근 2주'], ['month', '이번 달'], ['all', '전체']];
-  const filters = `<div class="filters">${segRoutine('cr', mode)}
+  const filters = `<div class="filters">${segRoutine('cr', mode)}${kindSeg}
     <div class="seg2" role="group" aria-label="기간 고르기">${periods.map(([p, l]) => `<button data-act="period" data-period="${p}" class="${ui.period === p ? 'on' : ''}" aria-pressed="${ui.period === p}">${l}</button>`).join('')}</div>
     <span class="grow"></span>${ks.map((k) => `<span class="lg ${k.color}"><i></i>${esc(nameOf(k))}</span>`).join('')}</div>`;
   if (!rows.length) {
-    return `${filters}<div class="empty">${P(mode === 'am' ? 'sun' : 'moon', 'epic')}<p>이 기간에는 ${ROUTINE[mode]} 기록이 아직 없어요.<br>설정의 '통계 미리 보기'에서 예시 기록을 넣어 볼 수 있어요.</p></div>`;
+    return `${filters}<div class="empty">${P(mode === 'am' ? 'sun' : 'moon', 'epic')}<p>이 기간에는 ${mode === 'am' ? `'${KINDS[kind].name}' 아침` : '저녁'} 기록이 아직 없어요.<br>설정의 '통계 미리 보기'에서 예시 기록을 넣어 볼 수 있어요.</p></div>`;
   }
   const shown = rows.slice(-cl(4, Math.floor(24 / ks.length), 14));
   const max = Math.max(1, ...shown.flatMap((r) => r.tl.map((x) => (x.complete ? min(x.total) : 0))));
@@ -1100,7 +1364,7 @@ function chartTabHTML() {
   const d0 = fromKey(rows[0].key), d1 = fromKey(rows[rows.length - 1].key);
   return `${filters}
     <div class="cgrid">
-      <section class="cardx"><div class="ctitle"><h3>${mode === 'am' ? '아침 준비' : '잘 준비'}에 걸린 시간 (분)</h3><small>${d0.getMonth() + 1}월 ${d0.getDate()}일 ~ ${d1.getMonth() + 1}월 ${d1.getDate()}일 · 기록한 ${rows.length}일${rows.length > shown.length ? ` 중 최근 ${shown.length}일` : ''}</small></div>
+      <section class="cardx"><div class="ctitle"><h3>${mode === 'am' ? `${KINDS[kind].name} 아침 준비` : '잘 준비'}에 걸린 시간 (분)</h3><small>${d0.getMonth() + 1}월 ${d0.getDate()}일 ~ ${d1.getMonth() + 1}월 ${d1.getDate()}일 · 기록한 ${rows.length}일${rows.length > shown.length ? ` 중 최근 ${shown.length}일` : ''}</small></div>
         <div class="plot" role="img" aria-label="날짜별로 ${mode === 'am' ? '아침 준비' : '잘 준비'}에 걸린 시간 막대그래프">${grid}<div class="bars" style="--n:${ks.length}">${bars}</div></div>
         <div class="xl">${xl}</div></section>
       <section class="cardx"><h3>할 일별 평균 시간 (분)</h3><div class="avgs">${avgRows}</div></section>
@@ -1147,14 +1411,20 @@ function settingsHTML() {
     <div class="shead"><h2 id="set-title">설정</h2><button class="x" data-act="close" aria-label="닫기">×</button></div>
     <section><h3>아이</h3><p>아이 수를 정하고, 아이마다 이름과 색, 아이콘을 골라 주세요. 아이 수에 맞춰 화면 배치가 바뀌어요.</p>${kidsEditorHTML()}</section>
     <section><h3>소리</h3><button class="toggle${S.sound ? ' on' : ''}" id="sound-toggle" data-act="sound" role="switch" aria-checked="${S.sound}"><i></i><span>${S.sound ? '켜짐' : '꺼짐'}</span></button></section>
+    <section><h3>아침밥 알람</h3><p>시작하고 ${S.alarm.min}분이 지났는데 아침을 다 먹지 못한 아이가 있으면 알람이 울려요. '알람 끄기'를 누르거나 아침을 다 먹으면 멈추고, 소리는 5분 뒤에 저절로 멎어요. 앱이 화면에 떠 있을 때만 울려요.</p>
+      <div class="row2"><button class="toggle${S.alarm.on ? ' on' : ''}" id="alarm-toggle" data-act="alarm-on" role="switch" aria-checked="${S.alarm.on}"><i></i><span>${S.alarm.on ? '켜짐' : '꺼짐'}</span></button>
+        <div class="stepper"><button class="stp" data-act="alarm-min" data-step="-5" aria-label="알람 시간 5분 줄이기"${S.alarm.min <= 5 ? ' disabled' : ''}>−</button><b id="alarm-min">${S.alarm.min}분</b><button class="stp" data-act="alarm-min" data-step="5" aria-label="알람 시간 5분 늘리기"${S.alarm.min >= 90 ? ' disabled' : ''}>+</button></div>
+        <button class="btn" data-act="alarm-test">알람 소리 들어 보기</button></div></section>
     <section><h3>오늘 기록 다시 시작</h3><p>잘못 시작했을 때 오늘 기록을 지우고 시작 전으로 돌려요.</p>
       <div class="row2"><button class="btn hold" data-act="reset" data-mode="am"${day.am && day.am.start ? '' : ' disabled'}>아침 다시 시작 (꾹)</button><button class="btn hold" data-act="reset" data-mode="pm"${day.pm && day.pm.start ? '' : ' disabled'}>저녁 다시 시작 (꾹)</button></div></section>
-    <section><h3>쉬는 날</h3><p>주말과 공휴일에는 아침 준비를 자동으로 쉬어요. 설, 부처님오신날, 추석과 대체공휴일은 지금 규정대로 2040년까지 들어 있어요. 방학이나 아픈 날, 선거일과 임시공휴일은 달력에서 바꿔 주세요.</p><button class="btn" data-act="open-cal">달력에서 쉬는 날 바꾸기</button></section>
+    <section><h3>쉬는 날</h3><p>주말과 공휴일은 쉬는 날이에요. 쉬는 날 아침에는 '교회 가는 날'(먹기·씻기·로션·옷·신발)과 '교회 안 가는 날'(먹기·씻기·로션) 중에서 골라요. 설, 부처님오신날, 추석과 대체공휴일은 지금 규정대로 2040년까지 들어 있어요. 방학이나 아픈 날, 선거일과 임시공휴일은 달력에서 바꿔 주세요.</p><button class="btn" data-act="open-cal">달력에서 쉬는 날 바꾸기</button></section>
     <section><h3>통계 미리 보기</h3><p>기록이 쌓이기 전에 통계 화면을 볼 수 있도록 지난 2주치 예시 기록을 넣어요. 언제든 지울 수 있어요.</p>${hasSample() ? '<button class="btn" data-act="sample-clear">예시 기록 지우기</button>' : '<button class="btn" data-act="sample-add">예시 기록 넣기</button>'}</section>
     <section><h3>기록 보관</h3><p>기록은 이 기기에만 저장돼요. 가끔 복사해서 메모나 메일에 붙여 두면 기기를 바꿀 때 되살릴 수 있어요.</p>
       <div class="row2"><button class="btn" data-act="backup">기록 복사하기</button><button class="btn" data-act="csv">엑셀용 표 복사하기</button><button class="btn" data-act="restore-open">복사해 둔 기록 되살리기</button></div></section>
     ${inFrame() ? '' : `<section><h3>홈 화면에 아이콘 만들기</h3><p>아이폰과 아이패드는 Safari의 공유 메뉴에서, 갤럭시는 크롬이나 삼성 인터넷의 메뉴에서 '홈 화면에 추가'를 고르세요.</p></section>`}
+    ${inFrame() ? '' : `<section><h3>앱 새로 받기</h3><p>앱이 고쳐졌다는 안내를 받았을 때 눌러요. 인터넷에 연결되어 있어야 하고, 이름과 기록은 그대로 남아요.</p><button class="btn hold" data-act="refresh-app">앱 새로 받기 (꾹)</button></section>`}
     <section><h3>모든 기록 지우기</h3><button class="btn danger hold" data-act="wipe">모든 기록 지우기 (꾹)</button></section>
+    <p class="ver" id="app-version">버전 ${APP_VERSION}</p>
   </div>`;
 }
 function modalHTML() {
@@ -1177,6 +1447,11 @@ function modalHTML() {
       <textarea class="area" id="restore-text" placeholder="여기에 붙여 넣기"></textarea>
       <div class="row2"><button class="btn" data-act="settings-open">취소</button><button class="btn danger hold" data-act="restore">되살리기 (꾹)</button></div></div>`;
   }
+  if (m.type === 'kind') {
+    return `<div class="sheet confirm" role="dialog" aria-modal="true" aria-labelledby="kd-title"><h2 id="kd-title">오늘 아침은 어떤 날인가요?</h2>
+      ${kindButtons(kindOfDay(ui.today))}
+      <div class="row2"><button class="btn hold" data-act="kind" data-kind="work">등원하는 날 (꾹)</button><button class="btn" data-act="close">닫기</button></div></div>`;
+  }
   if (m.type === 'welcome') {
     return `<div class="sheet" role="dialog" aria-modal="true" aria-labelledby="wl-title"><h2 id="wl-title">누가 쓰나요?</h2>
       <p>아이 수와 이름, 색, 아이콘을 정해 주세요. 이 기기에만 저장되고, 나중에 설정에서 바꿀 수 있어요.</p>
@@ -1192,24 +1467,28 @@ function seeded(seed) {
 }
 function addSamples() {
   const r = seeded(20261120), today = fromKey(ui.today);
-  const base = { am: [[19, 5, 2.3, 6, 3, 3], [26, 7, 2.5, 9, 3.4, 4.6]], pm: [[14, 2.5, 4], [16, 3, 6]] };
+  const mins = {
+    am: [{ eat: 19, wash: 5, lotion: 2.3, dress: 6, bag: 3, shoes: 3 }, { eat: 26, wash: 7, lotion: 2.5, dress: 9, bag: 3.4, shoes: 4.6 }],
+    pm: [{ bath: 14, lotion: 2.5, pajama: 4 }, { bath: 16, lotion: 3, pajama: 6 }],
+  };
   for (let i = 14; i >= 1; i--) {
-    const d = new Date(today.getFullYear(), today.getMonth(), today.getDate() - i), key = dkey(d);
+    const d = new Date(today.getFullYear(), today.getMonth(), today.getDate() - i), key = dkey(d), off = isOff(key);
     const day = S.days[key] || (S.days[key] = {});
     ['am', 'pm'].forEach((mode) => {
-      if ((day[mode] && day[mode].start) || (mode === 'am' && isOff(key))) return;
-      const start = new Date(d.getFullYear(), d.getMonth(), d.getDate(), mode === 'am' ? 7 : 20, (mode === 'am' ? 22 : 2) + Math.floor(r() * 18), Math.floor(r() * 60)).getTime();
+      if (day[mode] && day[mode].start) return;
+      const hour = mode === 'pm' ? 20 : off ? 8 : 7, minute = mode === 'pm' ? 2 : off ? 30 : 22;
+      const start = new Date(d.getFullYear(), d.getMonth(), d.getDate(), hour, minute + Math.floor(r() * 18), Math.floor(r() * 60)).getTime();
       const se = { start, done: {}, sample: true };
+      if (mode === 'am') se.kind = !off ? 'work' : kindOfDay(key) || (d.getDay() === 0 ? 'church' : 'home');   // 예시: 일요일은 교회 가는 날
       S.kids.forEach((k, ki) => {
         let t = start; se.done[k.id] = {};
-        TASKS[mode].forEach((task, ti) => {
-          t += Math.round(base[mode][ki % 2][ti] * (1 + Math.floor(ki / 2) * 0.08) * (0.75 + r() * 0.5) * 60000);
+        tasksFor(se, mode).forEach((task, ti) => {
+          t += Math.round(mins[mode][ki % 2][task.id] * (1 + Math.floor(ki / 2) * 0.08) * (0.75 + r() * 0.5) * 60000);
           if (!(mode === 'pm' && i === 9 && ki === 1 && ti === 2)) se.done[k.id][task.id] = t;
         });
       });
       day[mode] = se;
     });
-    if (!day.am && !day.pm) delete S.days[key];
   }
   save();
 }
@@ -1221,13 +1500,24 @@ function clearSamples() {
   save();
 }
 function tableText() {
-  const rows = [['날짜', '요일', '구분', '아이', '순서', '할 일', '시작', '완료', '걸린 시간(초)']];
+  const rows = [['날짜', '요일', '구분', '아침 종류', '아이', '순서', '할 일', '시작', '완료', '걸린 시간(초)']];
   Object.keys(S.days).sort().forEach((key) => ['am', 'pm'].forEach((mode) => {
     const se = S.days[key][mode];
     if (!se || !se.start || se.sample) return;
-    kids().forEach((k) => timeline(se, k.id, mode).items.forEach((it, j) => rows.push([key, WD[fromKey(key).getDay()], ROUTINE[mode], nameOf(k), j + 1, it.t.name, hms(se.start), hms(it.at), Math.round(it.dur / 1000)])));
+    kids().forEach((k) => timeline(se, k.id, mode).items.forEach((it, j) => rows.push([key, WD[fromKey(key).getDay()], ROUTINE[mode], mode === 'am' ? KINDS[seKind(se)].name : '', nameOf(k), j + 1, it.t.name, hms(se.start), hms(it.at), Math.round(it.dur / 1000)])));
   }));
   return rows.map((r) => r.join('\t')).join('\n');
+}
+/* 설정의 '앱 새로 받기': 기기에 보관해 둔 앱 파일을 버리고 인터넷에서 새로 받는다. 이름과 기록은 건드리지 않는다. */
+async function refreshApp() {
+  toast('새 판을 받는 중이에요');
+  try {
+    const res = await fetch(`manifest.webmanifest?fresh=${now()}`, { cache: 'no-store' });
+    if (!res.ok) throw new Error('offline');
+    if (navigator.serviceWorker) { const reg = await navigator.serviceWorker.getRegistration(); if (reg) await reg.unregister(); }
+    if (window.caches) { const keys = await caches.keys(); await Promise.all(keys.filter((k) => k.indexOf('dahaesseoyo') === 0).map((k) => caches.delete(k))); }
+    location.reload();
+  } catch (e) { toast('인터넷에 연결된 뒤에 다시 해 주세요'); }
 }
 async function copyOut(title, text) {
   try { await navigator.clipboard.writeText(text); toast('복사했어요'); }
@@ -1235,9 +1525,19 @@ async function copyOut(title, text) {
 }
 
 /* ------------------------------------------------------------------ 그리기 */
+/* 윗줄이 화면보다 길어지면 날 종류는 그림만 남기고, 그래도 길면 요일을, 그래도 길면 시작 시각을 뺀다 */
+function fitTop() {
+  const top = $('.top');
+  if (!top) return;
+  top.classList.remove('tight1', 'tight2', 'tight3');
+  for (const level of ['tight1', 'tight2', 'tight3']) {
+    if (top.scrollWidth <= top.clientWidth) return;
+    top.classList.add(level);
+  }
+}
 function render() {
   app.innerHTML = ui.view === 'stats' ? statsHTML() : boardHTML();
-  if (ui.view === 'board') planLanes();
+  if (ui.view === 'board') { fitTop(); planLanes(); }
 }
 function renderModal() {
   const old = modalRoot.querySelector('.sheet'), top = old ? old.scrollTop : 0;
@@ -1250,20 +1550,26 @@ function measure() {
   app.classList.toggle('portrait', W < H);
   app.style.setProperty('--u', `${(W < H ? W * 0.0145 : Math.min(H, W * 0.72) / 100).toFixed(3)}px`);
   app.style.setProperty('--w', `${W}px`);
-  if (ui.view === 'board') planLanes();
+  if (ui.view === 'board') { fitTop(); planLanes(); }
 }
 function tick() {
   const t = now(), d = new Date(t), key = dkey(d), auto = autoMode(d);
   if (key !== ui.today || auto !== ui.auto) {
     if (key !== ui.today) { ui.peek = {}; if (ui.day === ui.today) { ui.day = key; ui.month = { y: d.getFullYear(), m: d.getMonth() }; } }
     ui.today = key; ui.auto = auto; ui.mode = auto;
-    render(); syncAwake();
+    if (syncKind(key)) save();
+    checkAlarm(t); render(); syncAwake();
     return;
   }
+  const redraw = checkAlarm(t);
   if (ui.view !== 'board') return;
+  if (redraw) { render(); return; }
   const c = $('#clock'), e = $('#elapsed'), se = sess(key, ui.mode, false);
   if (c) c.textContent = `${ampm(t)} ${clock(t)}`;
-  if (e && se && se.start) e.textContent = elapsedText(se, ui.mode, t);
+  if (e && se && se.start) {
+    const txt = elapsedText(se, ui.mode, t, boardTasks(ui.mode));
+    if (e.textContent !== txt) { e.textContent = txt; fitTop(); }
+  }
 }
 
 /* ------------------------------------------------------------------ 누르기 */
@@ -1277,7 +1583,11 @@ function act(el) {
   switch (a) {
     case 'start': {
       const se = sess(key, mode, true);
-      if (!se.start) { se.start = now(); save(); sfx.start(); render(); syncAwake(); }
+      if (!se.start) {
+        se.start = now();
+        if (mode === 'am') se.kind = kindOfDay(key) || 'work';
+        save(); sfx.start(); primeAlarm(); render(); syncAwake();
+      }
       break;
     }
     case 'task': {
@@ -1290,25 +1600,39 @@ function act(el) {
       if (done[task]) { delete done[task]; ui.just = null; ui.peek[kid] = false; sfx.undo(); }
       else {
         done[task] = Math.max(t, se.start);
-        const complete = timeline(se, kid, mode).complete;
+        const complete = timeline(se, kid, mode, boardTasks(mode)).complete;
         ui.just = { kid, task, party: complete };
         if (complete) { ui.peek[kid] = false; sfx.party(); } else sfx.done();
       }
-      save(); render(); ui.just = null; syncAwake();
+      save(); checkAlarm(t); render(); ui.just = null; syncAwake();
       break;
     }
     case 'peek': ui.peek[el.dataset.kid] = true; render(); break;
     case 'unpeek': ui.peek[el.dataset.kid] = false; render(); break;
     case 'mode': ui.mode = el.dataset.mode; render(); syncAwake(); break;
-    case 'today-on': S.off[key] = false; if (S.off[key] === autoOff(key)) delete S.off[key]; save(); render(); break;
+    case 'kind': setKind(key, el.dataset.kind); ui.modal = null; ui.peek = {}; checkAlarm(now()); renderModal(); render(); syncAwake(); break;
+    case 'kind-open': ui.modal = { type: 'kind' }; renderModal(); break;
+    case 'alarm-off': {
+      const se = sess(key, 'am', false);
+      if (se) { se.alarmOff = now(); save(); }
+      if (!checkAlarm(now()) && ring) { ring = null; stopSound(); renderAlarm(); }
+      if (ui.view === 'board') render();
+      break;
+    }
+    case 'alarm-on': S.alarm.on = !S.alarm.on; save(); if (!S.alarm.on) stopSound(); checkAlarm(now()); renderModal(); render(); break;
+    case 'alarm-min': S.alarm.min = cl(5, S.alarm.min + Number(el.dataset.step), 90); save(); checkAlarm(now()); renderModal(); render(); break;
+    case 'alarm-test': testAlarm(); break;
+    case 'refresh-app': refreshApp(); break;
+    case 'ckind': ui.ck = el.dataset.kind; render(); break;
     case 'timer': { const se = sess(key, mode, false); if (se && se.start) { ui.modal = { type: 'timer', start: se.start }; renderModal(); } break; }
     case 'reset': {
       const m = el.dataset.mode, day = S.days[key];
       if (day && day[m]) { delete day[m]; if (!day.am && !day.pm) delete S.days[key]; }
-      ui.peek = {}; ui.modal = null; save(); render(); renderModal(); syncAwake(); toast(`${ROUTINE[m]} 기록을 지웠어요`);
+      ui.peek = {}; ui.modal = null; save(); checkAlarm(now()); render(); renderModal(); syncAwake(); toast(`${ROUTINE[m]} 기록을 지웠어요`);
       break;
     }
-    case 'stats': ui.view = 'stats'; ui.day = key; ui.month = { y: fromKey(key).getFullYear(), m: fromKey(key).getMonth() }; ui.sr = mode; ui.cr = mode; render(); break;
+    case 'stats': if (mode === 'am' && kindOfDay(key)) ui.ck = kindOfDay(key);
+      ui.view = 'stats'; ui.day = key; ui.month = { y: fromKey(key).getFullYear(), m: fromKey(key).getMonth() }; ui.sr = mode; ui.cr = mode; render(); break;
     case 'back': ui.view = 'board'; render(); break;
     case 'tab': ui.tab = el.dataset.tab; render(); break;
     case 'pick': ui.day = el.dataset.day; render(); break;
@@ -1318,12 +1642,13 @@ function act(el) {
     case 'toggle-off': {
       const want = !isOff(ui.day);
       if (want === autoOff(ui.day)) delete S.off[ui.day]; else S.off[ui.day] = want;
-      save(); render();
+      if (ui.day === ui.today) syncKind(ui.today);
+      save(); checkAlarm(now()); render();
       break;
     }
     case 'settings': case 'settings-open': ui.modal = { type: 'settings' }; ui.pick = null; renderModal(); break;
     case 'close': ui.modal = null; ui.pick = null; renderModal(); render(); break;
-    case 'count': S.count = cl(1, S.count + Number(el.dataset.step), MAX_KIDS); ui.pick = null; ui.peek = {}; save(); renderModal(); render(); syncAwake(); break;
+    case 'count': S.count = cl(1, S.count + Number(el.dataset.step), MAX_KIDS); ui.pick = null; ui.peek = {}; save(); checkAlarm(now()); renderModal(); render(); syncAwake(); break;
     case 'pick-icon': { const i = Number(el.dataset.i); ui.pick = ui.pick === i ? null : i; renderModal(); break; }
     case 'set-color': S.kids[Number(el.dataset.i)].color = el.dataset.color; save(); renderModal(); render(); break;
     case 'set-icon': S.kids[Number(el.dataset.i)].icon = el.dataset.icon; ui.pick = null; save(); renderModal(); render(); break;
@@ -1338,11 +1663,11 @@ function act(el) {
       try {
         const raw = JSON.parse($('#restore-text').value);
         if (!raw || typeof raw.days !== 'object') throw new Error('shape');
-        S = normalize(raw); save(); ui.modal = null; ui.peek = {}; renderModal(); render(); toast('기록을 되살렸어요');
+        S = normalize(raw); save(); ui.modal = null; ui.peek = {}; checkAlarm(now()); renderModal(); render(); toast('기록을 되살렸어요');
       } catch (e) { toast('붙여 넣은 글을 읽지 못했어요'); }
       break;
     }
-    case 'wipe': S = normalize({ kids: S.kids, count: S.count, sound: S.sound }); save(); ui.modal = null; ui.peek = {}; renderModal(); render(); toast('모든 기록을 지웠어요'); break;
+    case 'wipe': S = normalize({ kids: S.kids, count: S.count, sound: S.sound, alarm: S.alarm }); save(); ui.modal = null; ui.peek = {}; checkAlarm(now()); renderModal(); render(); toast('모든 기록을 지웠어요'); break;
     default: break;
   }
 }
@@ -1359,6 +1684,7 @@ document.addEventListener('pointerup', cancelHold);
 document.addEventListener('pointercancel', cancelHold);
 document.addEventListener('pointerleave', (e) => { if (e.target === holdEl) cancelHold(); }, true);
 document.addEventListener('click', (e) => {
+  unlockAudio();
   const b = e.target.closest && e.target.closest('[data-act]');
   if (!b || b.disabled) return;
   if (b.classList.contains('hold')) {
@@ -1372,7 +1698,7 @@ document.addEventListener('click', (e) => {
 modalRoot.addEventListener('input', (e) => {
   const i = e.target.dataset && e.target.dataset.name;
   if (i === undefined) return;
-  S.kids[Number(i)].name = e.target.value.trim().slice(0, 6); save(); render();
+  S.kids[Number(i)].name = e.target.value.trim().slice(0, 6); save(); render(); if (ring) renderAlarm();
 });
 modalRoot.addEventListener('click', (e) => { if (e.target === modalRoot && ui.modal && ui.modal.type !== 'welcome') { ui.modal = null; ui.pick = null; renderModal(); render(); } });
 document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && ui.modal && ui.modal.type !== 'welcome') { ui.modal = null; ui.pick = null; renderModal(); render(); } });
@@ -1380,13 +1706,15 @@ document.addEventListener('contextmenu', (e) => { if (!(e.target.closest && e.ta
 document.addEventListener('visibilitychange', () => { if (!document.hidden) { tick(); syncAwake(); } });
 
 /* ------------------------------------------------------------------ 시작 */
+if (syncKind(ui.today)) save();
 measure();
+checkAlarm(now());
 render();
 if (kids().every((k) => !k.name) && !Object.keys(S.days).length) { ui.modal = { type: 'welcome' }; renderModal(); }
 setInterval(tick, 1000);
 window.addEventListener('resize', measure);
 if (window.ResizeObserver) new ResizeObserver(measure).observe(app);
-if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { if (ui.view === 'board') planLanes(); });
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { if (ui.view === 'board') { fitTop(); planLanes(); } });
 syncAwake();
 try {
   if ('serviceWorker' in navigator && location.protocol === 'https:' && !inFrame()) navigator.serviceWorker.register('sw.js').catch(() => {});
